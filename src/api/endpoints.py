@@ -1,10 +1,13 @@
 
 from django.urls import path, include
 from django.conf.urls import url
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView
 from .views import *
 
 api_urls = [
     url(r'^rest-auth/', include('rest_auth.urls')),
-    # path('user/data/', GetUserDataView.as_view(), name='get_users_data'),
+    path('datasets/get/', GetDatasetsView.as_view(), name='get_datasets'),
+    path('datasets/update/<int:pk>/', UpdateDatasetView.as_view(), name='update_dataset'),
+    path('datasets/delete/<int:pk>/', DeleteDatasetView.as_view(), name='delete_dataset'),
+    path('datasets/create/', CreateAPIView.as_view(), name='create_dataset'),
 ]

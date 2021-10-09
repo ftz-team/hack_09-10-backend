@@ -29,16 +29,16 @@ class Task(models.Model):
 
 class Dataset(models.Model):
     name = models.CharField(max_length=1000)
-    dataset_id = models.IntegerField()
     tags = models.ManyToManyField(Tag, related_name='dataset_tags', blank=True)
     status = models.IntegerField()
     analytics = models.FileField()
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField()
     owner = models.ForeignKey('core.Company', on_delete=models.CASCADE, default=1, blank=True, null=True)
-    # price_per_row = 
-    # price_per_feature = 
-    # fueatures = 
+    description = models.CharField(max_length=1000, default='')
+    price_per_row = models.IntegerField(default=1)
+    price_per_feature = models.IntegerField(default=1)
+    data = models.FileField() 
 
 
 class Company(models.Model):
