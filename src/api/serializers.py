@@ -10,7 +10,21 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = '__all__'
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ('pk', 'name')
+
+
 class DatasetSerializer(serializers.ModelSerializer):
+    owner = CompanySerializer()
+    tags = TagSerializer(many=True)
     class Meta:
         model = Dataset
         fields = '__all__'

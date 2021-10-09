@@ -29,16 +29,25 @@ class Task(models.Model):
 
 class Dataset(models.Model):
     name = models.CharField(max_length=1000)
-    tags = models.ManyToManyField(Tag, related_name='dataset_tags', blank=True)
-    status = models.IntegerField()
-    analytics = models.FileField()
-    created_at = models.DateTimeField()
-    modified_at = models.DateTimeField()
+    tags = models.ManyToManyField(Tag, related_name='dataset_tags', blank=True, null=True)
+    STATUS_CHOICES = [
+        (0, 'В обработке'),
+        (1, 'Готов'),
+    ]
+    status = models.IntegerField(choices=STATUS_CHOICES, blank=True, null=True)
+    TYPE_CHOICES = [
+        (0, 'Приватный'),
+        (1, 'Публичный')
+    ]
+    type = models.IntegerField(choices=TYPE_CHOICES, blank=True, null=True)
+    analytics = models.FileField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    modified_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     owner = models.ForeignKey('core.Company', on_delete=models.CASCADE, default=1, blank=True, null=True)
-    description = models.CharField(max_length=1000, default='')
-    price_per_row = models.IntegerField(default=1)
-    price_per_feature = models.IntegerField(default=1)
-    data = models.FileField() 
+    description = models.CharField(max_length=1000, default='', blank=True, null=True)
+    price_per_row = models.IntegerField(default=1, blank=True, null=True)
+    price_per_feature = models.IntegerField(default=1, blank=True, null=True)
+    data = models.FileField(blank=True, null=True) 
 
 
 class Company(models.Model):
