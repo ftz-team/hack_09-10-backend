@@ -1,7 +1,23 @@
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.utils import tree
 
+from .helpers import get_analytics
 from .managers import UserManager
+
+BASE_URL = 'http://194.67.108.25:7000'
+# BASE_URL = 'http://127.0.0.1:8000'
+
+@receiver(post_save, sender='core.Dataset')
+def update_dataset_metadata(sender, instance=None, created=False, **kwargs):
+    if created:
+        path = BASE_URL + instance.data.url
+        print(path)
+        json_metadata = get_analytics(path_to_file=path)
+        instance.analytics = json_metadata
+        instance.save()
 
 
 class Tag(models.Model):
@@ -29,7 +45,7 @@ class Task(models.Model):
 
 class Dataset(models.Model):
     name = models.CharField(max_length=1000)
-    tags = models.ManyToManyField(Tag, related_name='dataset_tags', blank=True, null=True)
+    tags = models.ManyToManyField(Tag, related_name='dataset_tags', blank=True)
     STATUS_CHOICES = [
         (0, 'В обработке'),
         (1, 'Готов'),
@@ -40,7 +56,7 @@ class Dataset(models.Model):
         (1, 'Публичный')
     ]
     type = models.IntegerField(choices=TYPE_CHOICES, blank=True, null=True)
-    analytics = models.FileField(blank=True, null=True)
+    analytics = models.JSONField(blank=True, null=True, default=dict)
     created_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     modified_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     owner = models.ForeignKey('core.Company', on_delete=models.CASCADE, default=1, blank=True, null=True)

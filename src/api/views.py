@@ -15,7 +15,7 @@ from .serializers import *
 class CreateDatasetView(generics.CreateAPIView):
     queryset = Dataset.objects.all()
     serializer_class = DatasetSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
 class UpdateDatasetView(generics.UpdateAPIView):
@@ -26,7 +26,7 @@ class UpdateDatasetView(generics.UpdateAPIView):
 
 class GetDatasetsView(generics.ListAPIView):
     queryset = Dataset.objects.all()
-    serializer_class = DatasetSerializer
+    serializer_class = GetDatasetSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['type', 'owner', 'status', ]
@@ -37,3 +37,15 @@ class DeleteDatasetView(generics.DestroyAPIView):
     queryset = Dataset.objects.all()
     serializer_class = DatasetSerializer
     permission_classes = [IsAuthenticated]
+
+
+class GetTagsView(generics.ListAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    permission_classes = [AllowAny]
+
+
+class GetCompaniesView(generics.ListAPIView):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
+    permission_classes = [AllowAny]

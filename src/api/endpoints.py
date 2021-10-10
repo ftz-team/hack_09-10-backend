@@ -10,4 +10,7 @@ api_urls = [
     path('datasets/update/<int:pk>/', UpdateDatasetView.as_view(), name='update_dataset'),
     path('datasets/delete/<int:pk>/', DeleteDatasetView.as_view(), name='delete_dataset'),
     path('datasets/create/', CreateDatasetView.as_view(), name='create_dataset'),
+
+    path('companies/get/', GetCompaniesView.as_view(), name='get_companies'),
+    path('tags/get/', GetTagsView.as_view(), name='get_tags'),
 ]
