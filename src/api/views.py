@@ -29,7 +29,7 @@ class GetDatasetsView(generics.ListAPIView):
     serializer_class = GetDatasetSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['type', 'owner', 'status', ]
+    filterset_fields = ['type', 'owner', 'status', 'id']
     search_fields = ['name', 'description']
 
 
